@@ -170,17 +170,17 @@ func parseCode(cond iface.WeatherSpan) (icon []string) {
 
 func formatCond(cur []string, cond iface.WeatherSpan, current bool) (ret []string) {
 
-	textWidth := 8
+	textWidth := 9
 	iconWidth := 7
 
 	icon := parseCode(cond)
 
-	ret = append(ret, fmt.Sprintf("%v %v ", cur[0], aatPad(cond.Weather[0].Description, textWidth+iconWidth)))
-	ret = append(ret, fmt.Sprintf("%v %v ", cur[1], aatPad(icon[0], iconWidth+textWidth)))
-	ret = append(ret, fmt.Sprintf("%v %v %v", cur[2], aatPad(icon[1], iconWidth), aatPad(fmt.Sprintf("%.0f °C", cond.Main.TempC), textWidth)))
-	ret = append(ret, fmt.Sprintf("%v %v %v", cur[3], aatPad(icon[2], iconWidth), aatPad(fmt.Sprintf("%s %.0f km/h", formatWind(cond.Wind.Deg), cond.Wind.Speed*3.6), textWidth)))
-	ret = append(ret, fmt.Sprintf("%v %v %v", cur[4], aatPad(icon[3], iconWidth), aatPad(fmt.Sprintf("%d km", cond.Visibility/1000), textWidth)))
-	ret = append(ret, fmt.Sprintf("%v %v %v", cur[5], aatPad(icon[4], iconWidth), aatPad(fmt.Sprintf("%.1f mm/h", cond.Rain.MM3h/3), textWidth)))
+	ret = append(ret, fmt.Sprintf("%v %v ", cur[0], aatPad(cond.Weather[0].Description, textWidth+iconWidth-1)))
+	ret = append(ret, fmt.Sprintf("%v%v ", cur[1], aatPad(icon[0], iconWidth+textWidth)))
+	ret = append(ret, fmt.Sprintf("%v%v %v", cur[2], aatPad(icon[1], iconWidth), aatPad(fmt.Sprintf("%.0f °C", cond.Main.TempC), textWidth)))
+	ret = append(ret, fmt.Sprintf("%v%v %v", cur[3], aatPad(icon[2], iconWidth), aatPad(fmt.Sprintf("%s %.0f km/h", formatWind(cond.Wind.Deg), cond.Wind.Speed*3.6), textWidth)))
+	ret = append(ret, fmt.Sprintf("%v%v %v", cur[4], aatPad(icon[3], iconWidth), aatPad(fmt.Sprintf("%d km", cond.Visibility/1000), textWidth)))
+	ret = append(ret, fmt.Sprintf("%v%v %v", cur[5], aatPad(icon[4], iconWidth), aatPad(fmt.Sprintf("%.1f mm/h", cond.Rain.MM3h/3), textWidth)))
 
 	return
 }
@@ -206,12 +206,12 @@ func printDay(currentDay []iface.WeatherSpan) (ret []string) {
 		}
 	}
 
-	dateFmt := "┤ " + time.Unix(currentDay[0].Dt, 0).Format("Mon 02. Jan") + " ├"
+	dateFmt := "┤" + time.Unix(currentDay[0].Dt, 0).Format("Mon 02. Jan") + "├"
 
 	ret = append([]string{
-		"                             ┌─────────────┐                             ",
-		"┌─────────────────┬──────────" + dateFmt + "──────────┬─────────────────┐",
-		"│     Morning     │      Noon└──────┬──────┘Evening   │     Night       │",
+		"                              ┌───────────┐                              ",
+		"┌─────────────────┬───────────" + dateFmt + "───────────┬─────────────────┐",
+		"│      Night      │      Dawn └─────┬─────┘ Noon      │     Evening     │",
 		"├─────────────────┼─────────────────┼─────────────────┼─────────────────┤"},
 		ret...)
 	ret = append(ret,
